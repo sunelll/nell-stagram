@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1089277511720",
+    "project_id": "couple-dday",
+    "storage_bucket": "couple-dday.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1089277511720:android:1c412dda67f8f1460f8d1d",
+        "android_client_info": {
+          "package_name": "com.nell.couple_dday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1089277511720-kf3a2b0tu7gk15c38qhrhot873t81rmv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgUkpXMf2aAmD_8_Gv_LZxejVnxl9L2nE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1089277511720-kf3a2b0tu7gk15c38qhrhot873t81rmv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
