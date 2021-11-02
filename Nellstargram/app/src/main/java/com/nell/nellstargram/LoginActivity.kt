@@ -1,4 +1,4 @@
-package com.nell.couple_dday
+package com.nell.nellstargram
 
 import android.content.ContentValues.TAG
 import android.content.Intent

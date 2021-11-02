@@ -1,4 +1,4 @@
-package com.nell.couple_dday.navigation
+package com.nell.nellstargram.navigation
 
 import android.os.Bundle
 import android.os.health.UidHealthStats
@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.nell.couple_dday.R
-import com.nell.couple_dday.navigation.model.ContentDTO
+import com.nell.nellstargram.R
+import com.nell.nellstargram.navigation.model.ContentDTO
 import kotlinx.android.synthetic.main.frgment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.*
 import kotlinx.android.synthetic.main.item_detail.view.*
@@ -21,9 +21,12 @@ import java.text.FieldPosition
 class DetailViewFragment : Fragment() {
     var firestore : FirebaseFirestore? = null
     var uid : String? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.frgment_detail, container, false)
         firestore = FirebaseFirestore.getInstance()
+        uid = FirebaseAuth.getInstance().currentUser?.uid
+
         view.detailviewfragment_recyclerview.adapter = DetailVewReecyclerViewAdater()
         view.detailviewfragment_recyclerview.layoutManager =  LinearLayoutManager(activity)
         //역순으로 출력
@@ -84,14 +87,15 @@ class DetailViewFragment : Fragment() {
             //This code is when the button is clicked
             viewholder.detailviewitem_favorite_imageview.setOnClickListener {
                 favoriteEvent(p1)
-                //This code os when the page is loaded
-                if(contentDTOs!![p1].favorites.containsKey(uid)){
-                    //This is like status
-                    viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite)
-                }else{
-                    //This is code is when the button is clicked
-                    viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
-                }
+            }
+
+            //This code os when the page is loaded
+            if(contentDTOs!![p1].favorites.containsKey(uid)){
+                //This is like status
+                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite)
+            }else{
+                //This is unlike status
+                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
             }
         }
 

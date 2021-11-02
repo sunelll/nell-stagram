@@ -1,4 +1,4 @@
-package com.nell.couple_dday.navigation
+package com.nell.nellstargram.navigation
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -18,8 +18,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import com.nell.couple_dday.R
-import com.nell.couple_dday.navigation.model.ContentDTO
+import com.nell.nellstargram.R
+import com.nell.nellstargram.navigation.model.ContentDTO
 import kotlinx.android.synthetic.main.activity_add_photo.*
 import java.text.SimpleDateFormat
 import java.util.*

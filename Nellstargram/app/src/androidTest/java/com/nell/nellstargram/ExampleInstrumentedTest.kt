@@ -1,4 +1,4 @@
-package com.nell.couple_dday
+package com.nell.nellstargram
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.nell.couple_dday", appContext.packageName)
+        assertEquals("com.nell.nellstargram", appContext.packageName)
     }
 }

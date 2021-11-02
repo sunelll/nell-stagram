@@ -1,4 +1,4 @@
-package com.nell.couple_dday.navigation.model
+package com.nell.nellstargram.navigation.model
 
 data class ContentDTO(var explain : String? = null, //컨텐츠의 설명관리
                       var imageUrl : String? = null, //이미지의 주소관리

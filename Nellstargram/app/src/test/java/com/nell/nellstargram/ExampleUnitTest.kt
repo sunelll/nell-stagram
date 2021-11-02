@@ -1,4 +1,4 @@
-package com.nell.couple_dday
+package com.nell.nellstargram
 
 import org.junit.Test
 

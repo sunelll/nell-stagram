@@ -1,11 +1,11 @@
-package com.nell.couple_dday.navigation
+package com.nell.nellstargram.navigation
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.nell.couple_dday.R
+import com.nell.nellstargram.R
 
 class GridFragment : Fragment(){
 

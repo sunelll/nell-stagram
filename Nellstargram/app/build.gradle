@@ -10,7 +10,7 @@ android {
     buildToolsVersion '29.0.3'
 
     defaultConfig {
-        applicationId "com.nell.couple_dday"
+        applicationId "com.nell.nellstargram"
         minSdkVersion 29
         targetSdkVersion 30
         versionCode 1
