@@ -5,6 +5,9 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
 android {
     compileSdkVersion 30
     buildToolsVersion '29.0.3'
@@ -15,8 +18,10 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "TWITTER_API_KEY",  properties['TWITTER_API_KEY']
+        buildConfigField "String", "TWITTER_API_SECRET_KEY", properties['TWITTER_API_SECRET_KEY']
     }
 
     buildTypes {
@@ -32,6 +37,12 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+}
+
+repositories {
+    google()
+    mavenCentral()
 }
 
 dependencies {

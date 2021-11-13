@@ -12,4 +12,8 @@
 /captures
 .externalNativeBuild
 .cxx
+
+# 이부분이 api 키나 안드로이드 보안을 위해서 적용할 부분이 되겠습니다.
 local.properties
+
+

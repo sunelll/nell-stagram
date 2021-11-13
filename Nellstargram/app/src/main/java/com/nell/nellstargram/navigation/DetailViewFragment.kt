@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nell.nellstargram.R
 import com.nell.nellstargram.navigation.model.ContentDTO
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.frgment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.*
 import kotlinx.android.synthetic.main.item_detail.view.*
@@ -44,6 +45,8 @@ class DetailViewFragment : Fragment() {
             firestore?.collection("images")?.orderBy("timestamp")?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentDTOs.clear()
                 contentUidList.clear()
+                //Sometimes, This code return null of querySnapshot when it signout
+                if(querySnapshot == null) return@addSnapshotListener
 
                 for(snapshot in querySnapshot!!.documents){
                     var item = snapshot.toObject(ContentDTO::class.java)
@@ -97,7 +100,28 @@ class DetailViewFragment : Fragment() {
                 //This is unlike status
                 viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
             }
+
+            //This code is when the profile image clicked : 프로필 이미지 클릭 이벤트
+            viewholder.detailviewitem_profile_image.setOnClickListener {
+                var fragment = UserFragment()
+                var bundle = Bundle()
+                bundle.putString("destinationUid", contentDTOs[p1].uid)
+                bundle.putString("userId", contentDTOs[p1].userId)
+                fragment.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+            }
+            //This code is when the profile text clicked : 프로필옆 UID 이벤트
+            viewholder.detailviewitem_profile_textview.setOnClickListener{
+                var fragment = UserFragment()
+                var bundle = Bundle()
+                bundle.putString("destinationUid", contentDTOs[p1].uid)
+                bundle.putString("userId", contentDTOs[p1].userId)
+                fragment.arguments = bundle
+                activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+            }
+
         }
+
 
         //좋아요 이벤트
         fun favoriteEvent (position: Int){
@@ -121,9 +145,6 @@ class DetailViewFragment : Fragment() {
                 transaction.set(tsDoc,contentDTO)
 
             }
-
-
         }
     }
-
 }

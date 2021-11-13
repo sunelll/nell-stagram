@@ -15,6 +15,7 @@ import com.google.firebase.auth.*
 import com.twitter.sdk.android.core.*
 import com.twitter.sdk.android.core.identity.TwitterAuthClient
 import kotlinx.android.synthetic.main.activity_login.*
+import java.util.*
 import kotlin.Result
 import android.widget.Toast.makeText as makeText1
 
@@ -24,7 +25,6 @@ class LoginActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
     var googleSignInClient : GoogleSignInClient? = null
     var GOOGLE_LOGIN_CODE = 9001
-    var TWITTER_LOGIN_CODE = 9002
 
     lateinit var twitterAuthClient: TwitterAuthClient
     var loginState = false
@@ -53,9 +53,14 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         // Configure Twitter SDK
+//        val authConfig = TwitterAuthConfig(
+//                getString(R.string.twitter_consumer_key),
+//                getString(R.string.twitter_consumer_secret)
+//        )
+
         val authConfig = TwitterAuthConfig(
-                getString(R.string.twitter_consumer_key),
-                getString(R.string.twitter_consumer_secret)
+                BuildConfig.TWITTER_API_KEY,
+                BuildConfig.TWITTER_API_SECRET_KEY
         )
 
         val twitterConfig = TwitterConfig.Builder(this)
@@ -69,6 +74,12 @@ class LoginActivity : AppCompatActivity() {
 
     fun signOut(){
         TODO()
+    }
+
+    //자동 로그인
+    override fun onStart() {
+        super.onStart()
+        moveMainPage(auth?.currentUser)
     }
 
     fun twitterLogin(){
@@ -95,13 +106,15 @@ class LoginActivity : AppCompatActivity() {
                 session.authToken.token,
                 session.authToken.secret
         )
-
         auth?.signInWithCredential(credential)
             ?.addOnCompleteListener(this) { task ->
+                //var email = auth!!.currentUser?.email
+                //var uid = auth!!.currentUser?.uid
+                //var user = arrayOf(email, uid)
+
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d("MainActivity", "signInWithCredential:success")
-                    val user = auth!!.currentUser
                     moveMainPage(task.result?.user)
 
                 } else {
@@ -123,7 +136,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == GOOGLE_LOGIN_CODE || requestCode == TWITTER_LOGIN_CODE){
+        if(requestCode == GOOGLE_LOGIN_CODE){
             var result = Auth.GoogleSignInApi.getSignInResultFromIntent(data)
             if(result.isSuccess){
                 try {
@@ -150,6 +163,7 @@ class LoginActivity : AppCompatActivity() {
                 }
             }
     }
+
 
     //회원가입 함수
     fun signinAndSignup(){

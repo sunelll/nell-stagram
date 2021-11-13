@@ -11,7 +11,7 @@
         <ImageView
             android:layout_marginLeft="10dp"
             android:layout_marginTop="7dp"
-            android:id="@+id/detailview_profile_image"
+            android:id="@+id/detailviewitem_profile_image"
             android:src="@mipmap/ic_launcher"
             android:layout_width="35dp"
             android:layout_height="35dp"/>

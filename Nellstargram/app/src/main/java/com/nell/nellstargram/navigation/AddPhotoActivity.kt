@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import android.widget.Toolbar
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,10 +41,13 @@ class AddPhotoActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+
         //Open the album
         var photoPickerIntent = Intent(Intent.ACTION_PICK)
         photoPickerIntent.type = "image/*"
-        startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)
+        //startActivityForResult(photoPickerIntent, PICK_IMAGE_FROM_ALBUM)
+        startForResult.launch(photoPickerIntent)
+
 
         //toolbar_enabled
         setSupportActionBar(my_toolbar)
@@ -81,6 +86,15 @@ class AddPhotoActivity : AppCompatActivity() {
 
     }
 
+    val startForResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode == RESULT_OK){
+            photoUri = it.data?.data
+            addphoto_image.setImageURI(photoUri)
+        }else{
+            finish()
+        }
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         var menuInflater = menuInflater
         menuInflater.inflate(R.menu.add_photo_toolbar, menu)
@@ -107,22 +121,21 @@ class AddPhotoActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_FROM_ALBUM){
-            if(resultCode == RESULT_OK){
-                //This is path to the selected image
-                photoUri = data?.data
-                addphoto_image.setImageURI(photoUri)
-            }else{
-                finish()
-            }
-        }
-    }
-
-
+//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == PICK_IMAGE_FROM_ALBUM){
+//            if(resultCode == RESULT_OK){
+//                //This is path to the selected image
+//                photoUri = data?.data
+//                addphoto_image.setImageURI(photoUri)
+//            }else{
+//                finish()
+//            }
+//        }
+//    }
 
     //업로드
+    @SuppressLint("SimpleDateFormat")
     fun contentUpload(){
         //Make filename
         var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
