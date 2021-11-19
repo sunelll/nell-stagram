@@ -51,7 +51,6 @@ class UserFragment : Fragment(){
 
     companion object{
         var PICK_PROFILE_FROM_ALBUM = 10
-        var context : Context? = null
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
@@ -125,6 +124,7 @@ class UserFragment : Fragment(){
                 }
     }
 
+    @SuppressLint("UseRequireInsteadOfGet")
     fun getFollowAndFollowing(){
         firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             if(documentSnapshot == null) return@addSnapshotListener
@@ -136,11 +136,11 @@ class UserFragment : Fragment(){
                 fragmentView?.account_tv_follow_count?.text = followDTO?.followerCount?.toString()
                 if(followDTO?.followers?.containsKey(currentUserUid!!)){
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
-                    //fragmentView?.account_btn_follow_signout?.background?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
+                    fragmentView?.account_btn_follow_signout?.background?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
                 }else{
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
                     if(uid != currentUserUid){
-                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
+                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.following)
                         fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
                     }
                 }

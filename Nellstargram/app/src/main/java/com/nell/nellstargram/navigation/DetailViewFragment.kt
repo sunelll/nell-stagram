@@ -1,5 +1,6 @@
 package com.nell.nellstargram.navigation
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.health.UidHealthStats
 import android.view.LayoutInflater
@@ -118,6 +119,12 @@ class DetailViewFragment : Fragment() {
                 bundle.putString("userId", contentDTOs[p1].userId)
                 fragment.arguments = bundle
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
+            }
+
+            viewholder.detailviewitem_comment_imageview.setOnClickListener { view ->
+                var intent = Intent(view.context , CommentActivity::class.java)
+                intent.putExtra("contentUid" , contentUidList[p1])
+                startActivity(intent)
             }
 
         }
