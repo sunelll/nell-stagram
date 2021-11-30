@@ -1,33 +1,40 @@
 package com.nell.nellstargram.navigation
 
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
-import android.os.health.UidHealthStats
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nell.nellstargram.R
+import com.nell.nellstargram.navigation.model.AlarmDTO
 import com.nell.nellstargram.navigation.model.ContentDTO
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.frgment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.*
 import kotlinx.android.synthetic.main.item_detail.view.*
-import java.text.FieldPosition
+
 
 class DetailViewFragment : Fragment() {
     var firestore : FirebaseFirestore? = null
     var uid : String? = null
+    companion object{
+        var lottieheart : LottieAnimationView? = null
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.frgment_detail, container, false)
         firestore = FirebaseFirestore.getInstance()
         uid = FirebaseAuth.getInstance().currentUser?.uid
+
 
         view.detailviewfragment_recyclerview.adapter = DetailVewReecyclerViewAdater()
         view.detailviewfragment_recyclerview.layoutManager =  LinearLayoutManager(activity)
@@ -89,18 +96,34 @@ class DetailViewFragment : Fragment() {
             Glide.with(p0.itemView.context).load(contentDTOs[p1].imageUrl).into(viewholder.detailviewitem_imageview_content)
 
             //This code is when the button is clicked
-            viewholder.detailviewitem_favorite_imageview.setOnClickListener {
+//            viewholder.detailviewitem_favorite_imageview.setOnClickListener {
+//                favoriteEvent(p1)
+//            }
+
+            viewholder.favorite_animationView.setOnClickListener {
                 favoriteEvent(p1)
             }
 
             //This code os when the page is loaded
-            if(contentDTOs!![p1].favorites.containsKey(uid)){
+            if(contentDTOs[p1].favorites.containsKey(uid)){
                 //This is like status
-                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite)
+                //viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite)
+                val animator = ValueAnimator.ofFloat(0f, 0.5f).setDuration(1500)
+                animator.addUpdateListener {
+                    viewholder.favorite_animationView!!.progress = it.animatedValue as Float
+                }
+                animator.start()
             }else{
                 //This is unlike status
-                viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
+                //viewholder.detailviewitem_favorite_imageview.setImageResource(R.drawable.ic_favorite_border)
+                val animator = ValueAnimator.ofFloat(0f).setDuration(500)
+                animator.addUpdateListener {
+                    viewholder.favorite_animationView!!.progress = it.animatedValue as Float
+                }
+                animator.start()
             }
+
+
 
             //This code is when the profile image clicked : 프로필 이미지 클릭 이벤트
             viewholder.detailviewitem_profile_image.setOnClickListener {
@@ -121,6 +144,7 @@ class DetailViewFragment : Fragment() {
                 activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content, fragment)?.commit()
             }
 
+            //리플 이벤트
             viewholder.detailviewitem_comment_imageview.setOnClickListener { view ->
                 var intent = Intent(view.context , CommentActivity::class.java)
                 intent.putExtra("contentUid" , contentUidList[p1])
@@ -129,7 +153,11 @@ class DetailViewFragment : Fragment() {
 
         }
 
-
+        var fragmentManager : FragmentManager? = null
+        fun test(view: View){
+         //   fragmentManager.beginTransaction()
+           //     .setCustomAnimations(R.id.favorite_animationView)
+        }
         //좋아요 이벤트
         fun favoriteEvent (position: Int){
             var tsDoc = firestore?.collection("images")?.document(contentUidList[position])
@@ -153,5 +181,21 @@ class DetailViewFragment : Fragment() {
 
             }
         }
+
+        //알람 이벤트
+
+        fun favoriteAlramEvent(destinationUid: String){
+            var alarmDTO = AlarmDTO()
+            alarmDTO.destinationUid = destinationUid
+            alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+            alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+            alarmDTO.kind = 0
+            alarmDTO.timestamp = System.currentTimeMillis()
+            FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        }
+
+
+
     }
 }

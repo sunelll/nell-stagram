@@ -6,21 +6,21 @@
     android:layout_height="50dp">
 
     <ImageView
-        android:id="@+id/commntview_imageview_profile"
-        android:layout_marginTop="7.5dp"
-        android:layout_width="30dp"
-        android:layout_height="30dp"/>
-    <TextView
-        android:id="@+id/commntview_textview_profile"
+        android:id="@+id/commentview_imageview_profile"
         android:layout_margin="7.5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"/>
+    <TextView
+        android:id="@+id/commentview_textview_profile"
+        android:layout_margin="14.5dp"
         android:textStyle="bold"
         android:text="UserID"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/commntview_textview_comment"
-        android:layout_margin="7.5dp"
+        android:id="@+id/commentview_textview_comment"
+        android:layout_marginTop="14.5dp"
         android:textStyle="bold"
         android:text="Message"
         android:layout_width="wrap_content"

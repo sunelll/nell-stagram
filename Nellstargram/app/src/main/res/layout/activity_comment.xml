@@ -17,6 +17,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:id="@+id/toolbar_division"
+        android:layout_below="@+id/my_toolbar"
         android:background="@color/colorDivision"
         android:layout_width="match_parent"
         android:layout_height="1dp"/>
