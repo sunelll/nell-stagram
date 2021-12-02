@@ -1,18 +1,13 @@
 package com.nell.nellstargram.navigation
 
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.app.Application
-import android.content.Context
 import android.content.Intent
-import android.content.pm.ApplicationInfo
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.*
 import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.content.ContextCompat
@@ -24,7 +19,6 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.nell.nellstargram.LoginActivity
 import com.nell.nellstargram.MainActivity
 import com.nell.nellstargram.R
@@ -107,6 +101,7 @@ class UserFragment : Fragment(){
         super.onResume()
         getProfileImage()
     }
+
     @SuppressLint("UseRequireInsteadOfGet")
     fun getProfileImage(){
 

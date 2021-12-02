@@ -123,8 +123,6 @@ class DetailViewFragment : Fragment() {
                 animator.start()
             }
 
-
-
             //This code is when the profile image clicked : 프로필 이미지 클릭 이벤트
             viewholder.detailviewitem_profile_image.setOnClickListener {
                 var fragment = UserFragment()
@@ -175,7 +173,7 @@ class DetailViewFragment : Fragment() {
                     // When the button is not clicked 좋아요 버튼이 눌려 있지 않을 때 클릭해서 좋아요.
                     contentDTO?.favoriteCount = contentDTO?.favoriteCount + 1
                     contentDTO?.favorites[uid!!] = true
-
+                    favoriteAlramEvent(contentDTOs[position].uid!!)
                 }
                 transaction.set(tsDoc,contentDTO)
 
@@ -183,7 +181,6 @@ class DetailViewFragment : Fragment() {
         }
 
         //알람 이벤트
-
         fun favoriteAlramEvent(destinationUid: String){
             var alarmDTO = AlarmDTO()
             alarmDTO.destinationUid = destinationUid
