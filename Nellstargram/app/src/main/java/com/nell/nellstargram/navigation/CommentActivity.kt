@@ -15,6 +15,7 @@ import com.nell.nellstargram.R
 import com.nell.nellstargram.navigation.model.AlarmDTO
 import com.nell.nellstargram.navigation.model.ContentDTO
 import kotlinx.android.synthetic.main.activity_comment.*
+import kotlinx.android.synthetic.main.item_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
 
 class CommentActivity : AppCompatActivity() {
@@ -44,14 +45,24 @@ class CommentActivity : AppCompatActivity() {
             commentAlram(destinationUid!!, comment_edit_msg.text.toString())
             comment_edit_msg.setText("")
         }
+
     }
+
+    fun commentDelete(destinationUid : String) {
+
+        val uid = FirebaseAuth.getInstance().currentUser?.uid
+        FirebaseFirestore.getInstance().collection("alarms").document().set(ContentDTO::class.java)
+
+
+    }
+
 
     fun commentAlram(destinationUid : String, message: String){
         var alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
         alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
-        alarmDTO.kind = 0
+        alarmDTO.kind = 1
         alarmDTO.timestamp = System.currentTimeMillis()
         alarmDTO.message = message
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
