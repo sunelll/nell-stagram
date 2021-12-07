@@ -53,11 +53,14 @@ class AlramFragment : Fragment(){
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
             var view = p0.itemView
 
-            FirebaseFirestore.getInstance().collection("profileImage").document(alarmDTOList[p1].uid!!).get().addOnCompleteListener { task ->
-                if (task.isSuccessful){
-                    val url = task.result!!["image"]
-                    Glide.with(view.context).load(url).apply(RequestOptions().circleCrop()).into(view.commentview_imageview_profile)
-                }
+            FirebaseFirestore.getInstance().collection("profileImages")
+                    .document(alarmDTOList[p1].uid!!)
+                    .get()
+                    .addOnCompleteListener { task ->
+                    if (task.isSuccessful){
+                        val url = task.result!!["image"]
+                        Glide.with(view.context).load(url).apply(RequestOptions().circleCrop()).into(view.commentview_imageview_profile)
+                    }
             }
 
             when(alarmDTOList[p1].kind){
@@ -74,6 +77,7 @@ class AlramFragment : Fragment(){
                     view.commentview_textview_profile.text = str_0
                 }
             }
+            view.commentview_imageview_profile.visibility = view.visibility
             view.commentview_textview_comment.visibility = View.INVISIBLE
         }
 
