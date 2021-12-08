@@ -22,6 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.nell.nellstargram.LoginActivity
 import com.nell.nellstargram.MainActivity
 import com.nell.nellstargram.R
+import com.nell.nellstargram.navigation.model.AlarmDTO
 import com.nell.nellstargram.navigation.model.ContentDTO
 import com.nell.nellstargram.navigation.model.FollowDTO
 import com.twitter.sdk.android.core.TwitterCore
@@ -102,6 +103,16 @@ class UserFragment : Fragment(){
         getProfileImage()
     }
 
+    fun followerAlarm(destinationUid : String) {
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = auth?.currentUser?.email
+        alarmDTO.uid = auth?.currentUser?.uid
+        alarmDTO.kind = 2
+        alarmDTO.timestamp = System.currentTimeMillis()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+    }
+
     @SuppressLint("UseRequireInsteadOfGet")
     fun getProfileImage(){
 
@@ -152,6 +163,7 @@ class UserFragment : Fragment(){
                 followDTO = FollowDTO()
                 followDTO!!.followerCount = 1
                 followDTO!!.followers[uid!!] = true
+                followerAlarm(uid!!)
 
                 transacion.set(tsDocFollowing, followDTO)
                 return@runTransaction
@@ -164,6 +176,7 @@ class UserFragment : Fragment(){
                 //It add following thired person when a third person do not follow me
                 followDTO?.followingCount = followDTO?.followingCount + 1
                 followDTO?.followers[uid!!] = true
+                followerAlarm(uid!!)
             }
             transacion.set(tsDocFollowing, followDTO)
             return@runTransaction

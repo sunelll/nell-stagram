@@ -44,16 +44,15 @@ class CommentActivity : AppCompatActivity() {
             FirebaseFirestore.getInstance().collection("images").document(contentUid!!).collection("comments").document().set(comment)
             commentAlram(destinationUid!!, comment_edit_msg.text.toString())
             comment_edit_msg.setText("")
+
+
         }
 
     }
 
     fun commentDelete(destinationUid : String) {
-
         val uid = FirebaseAuth.getInstance().currentUser?.uid
         FirebaseFirestore.getInstance().collection("alarms").document().set(ContentDTO::class.java)
-
-
     }
 
 
