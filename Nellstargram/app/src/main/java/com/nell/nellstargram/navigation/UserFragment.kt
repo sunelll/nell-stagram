@@ -94,14 +94,15 @@ class UserFragment : Fragment(){
             photoPickerIntent.type = "image/*"
             activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
         }
+        getProfileImage()
         getFollowAndFollowing()
         return fragmentView
     }
 
-    override fun onResume() {
-        super.onResume()
-        getProfileImage()
-    }
+//    override fun onResume() {
+//        super.onResume()
+//
+//    }
 
     fun followerAlarm(destinationUid : String) {
         var alarmDTO = AlarmDTO()
@@ -135,6 +136,7 @@ class UserFragment : Fragment(){
         firestore?.collection("users")?.document(uid!!)?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
             if(documentSnapshot == null) return@addSnapshotListener
             var followDTO = documentSnapshot.toObject(FollowDTO::class.java)
+
             if(followDTO?.followingCount != null){
                 fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
             }
@@ -146,8 +148,9 @@ class UserFragment : Fragment(){
                 }else{
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
                     if(uid != currentUserUid){
-                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.following)
                         fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
+                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.following)
+
                     }
                 }
             }
@@ -194,11 +197,11 @@ class UserFragment : Fragment(){
                 return@runTransaction
             }
             if(followDTO!!.followers.containsKey(currentUserUid)){
-                //It cancel my follower when I follow a third person
+                //It cancel my follower when I follow a third person //팔로우를 한 상태에 클릭하면 팔로잉 취소
                 followDTO!!.followerCount = followDTO!!.followerCount - 1
                 followDTO!!.followers.remove(currentUserUid!!)
             }else{
-                //It add my follower when I don't follow a third person
+                //It add my follower when I don't follow a third person //팔로우를 하지 않은 상태에 클릭하면 팔로잉
                 followDTO!!.followerCount = followDTO!!.followerCount + 1
                 followDTO!!.followers[currentUserUid!!] = true
             }
