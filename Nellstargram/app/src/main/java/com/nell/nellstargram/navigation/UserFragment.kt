@@ -35,12 +35,13 @@ class UserFragment : Fragment(){
 
     // Firebase
     var fragmentView : View? = null
-    var firestore : FirebaseFirestore? = null
+    var auth : FirebaseAuth? = null
 
     //private String destinationUid;
     var uid : String? = null
-    var auth : FirebaseAuth? = null
     var currentUserUid : String? = null
+
+    var firestore : FirebaseFirestore? = null
 
     var GlideManager : RequestManager? = null
 
@@ -72,22 +73,18 @@ class UserFragment : Fragment(){
             //Other User Page
             fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
             var mainactivity = (activity as MainActivity)
-            mainactivity?.toolbar_username?.text = arguments?.getString("userId")
-            mainactivity?.toolbar_back_btn.setOnClickListener {
-                mainactivity.bottom_navigation.selectedItemId = R.id.action_home
-            }
             mainactivity?.toolbar_title_image?.visibility = View.GONE
             mainactivity?.toolbar_username?.visibility = View.VISIBLE
             mainactivity?.toolbar_back_btn.visibility = View.VISIBLE
 
+            mainactivity?.toolbar_username?.text = arguments!!.getString("userId")
+            mainactivity?.toolbar_back_btn.setOnClickListener {
+                mainactivity.bottom_navigation.selectedItemId = R.id.action_home
+            }
             fragmentView?.account_btn_follow_signout?.setOnClickListener {
                 requestFollw()
             }
         }
-
-        fragmentView?.account_reclerview?.adapter = UserFragmentRecyclerViewAdapter()
-        fragmentView?.account_reclerview?.layoutManager = GridLayoutManager(activity!!, 3)
-
         //버튼 이벤트
         fragmentView?.account_iv_profile?.setOnClickListener{
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
@@ -96,6 +93,8 @@ class UserFragment : Fragment(){
         }
         getProfileImage()
         getFollowAndFollowing()
+        fragmentView?.account_reclerview?.layoutManager = GridLayoutManager(activity!!, 3)
+        fragmentView?.account_reclerview?.adapter = UserFragmentRecyclerViewAdapter()
         return fragmentView
     }
 
@@ -140,12 +139,16 @@ class UserFragment : Fragment(){
             if(followDTO?.followingCount != null){
                 fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
             }
+
             if(followDTO?.followerCount != null){
                 fragmentView?.account_tv_follow_count?.text = followDTO?.followerCount?.toString()
-                if(followDTO?.followers?.containsKey(currentUserUid!!)){
+                if(followDTO?.followers?.containsKey(currentUserUid)!!){
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
-                    fragmentView?.account_btn_follow_signout?.background?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
+                    fragmentView?.account_btn_follow_signout
+                            ?.background
+                            ?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
                 }else{
+
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
                     if(uid != currentUserUid){
                         fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
@@ -173,12 +176,14 @@ class UserFragment : Fragment(){
             }
             if(followDTO.followings.containsKey(uid)){
                 //It remove following thired person when a third person follow me
+                //내가 팔로우 한 상태, 나의 키가 상대에게 있으면.
                 followDTO?.followingCount = followDTO?.followingCount - 1
-                followDTO?.followers?.remove(uid)
+                followDTO?.followings?.remove(uid)
             }else {
                 //It add following thired person when a third person do not follow me
+                    //내가 팔로우 안 한 상태라면
                 followDTO?.followingCount = followDTO?.followingCount + 1
-                followDTO?.followers[uid!!] = true
+                followDTO?.followings[uid!!] = true
                 followerAlarm(uid!!)
             }
             transacion.set(tsDocFollowing, followDTO)
@@ -197,7 +202,8 @@ class UserFragment : Fragment(){
                 return@runTransaction
             }
             if(followDTO!!.followers.containsKey(currentUserUid)){
-                //It cancel my follower when I follow a third person //팔로우를 한 상태에 클릭하면 팔로잉 취소
+                //It cancel my follower when I follow a third person
+                    // 팔로우를 한 상태에 클릭하면 팔로잉 취소
                 followDTO!!.followerCount = followDTO!!.followerCount - 1
                 followDTO!!.followers.remove(currentUserUid!!)
             }else{
@@ -243,7 +249,10 @@ class UserFragment : Fragment(){
 
         override fun onBindViewHolder(p0: RecyclerView.ViewHolder, p1: Int) {
            var imageview = (p0 as CustomViewHolder).imageView
-            Glide.with(p0.itemView.context).load(contentDTOs[p1].imageUrl).apply(RequestOptions().centerCrop()).into(imageview)
+            Glide.with(p0.itemView.context)
+                    .load(contentDTOs[p1].imageUrl)
+                    .apply(RequestOptions().centerCrop())
+                    .into(imageview)
         }
 
     }
