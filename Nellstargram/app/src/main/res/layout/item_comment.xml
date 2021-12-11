@@ -20,6 +20,8 @@
             android:layout_margin="14.5dp"
             android:textStyle="bold"
             android:text="UserID"
+            android:singleLine="true"
+            android:ellipsize="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 

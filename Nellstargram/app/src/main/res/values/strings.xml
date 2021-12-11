@@ -12,9 +12,9 @@
     <string name="signin_twitter">Twitter login</string>
     <string name="signup_complete">Membership success</string>
     <string name="signin_complete">Login success</string>
-    <string name="signout">Signout</string>
-    <string name="signout_success">Signout success</string>
-    <string name="signout_fail">Signout fail</string>
+    <string name="signout">로그아웃</string>
+    <string name="signout_success">로그아웃 성공</string>
+    <string name="signout_fail">로그아웃 실패</string>
     <string name="signout_fail_null">Please enter your email and password</string>
 
     <!-- Bottom Navigation View -->
@@ -29,7 +29,8 @@
     <string name="following">Following</string>
     <string name="follower">Follower</string>
     <string name="follow">Follow</string>
-    <string name="follow_cancel">Follow cancel</string>
+    <string name="follow_click">팔로우하기</string>
+    <string name="follow_cancel">언팔로우</string>
     <string name="profile">Profile</string>
     <string name="count_0">0</string>
 

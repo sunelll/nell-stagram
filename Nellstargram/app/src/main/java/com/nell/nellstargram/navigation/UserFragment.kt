@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -43,15 +42,13 @@ class UserFragment : Fragment(){
 
     var firestore : FirebaseFirestore? = null
 
-    var GlideManager : RequestManager? = null
-
     companion object{
         var PICK_PROFILE_FROM_ALBUM = 10
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var fragmentView = LayoutInflater.from(activity).inflate(R.layout.frgment_user, container, false)
+        fragmentView = LayoutInflater.from(activity).inflate(R.layout.frgment_user, container, false)
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
         currentUserUid = auth?.currentUser?.uid
@@ -85,6 +82,10 @@ class UserFragment : Fragment(){
                 requestFollw()
             }
         }
+        fragmentView?.account_reclerview?.adapter = UserFragmentRecyclerViewAdapter()
+        fragmentView?.account_reclerview?.layoutManager = GridLayoutManager(activity!!, 3)
+
+
         //버튼 이벤트
         fragmentView?.account_iv_profile?.setOnClickListener{
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
@@ -93,15 +94,8 @@ class UserFragment : Fragment(){
         }
         getProfileImage()
         getFollowAndFollowing()
-        fragmentView?.account_reclerview?.layoutManager = GridLayoutManager(activity!!, 3)
-        fragmentView?.account_reclerview?.adapter = UserFragmentRecyclerViewAdapter()
         return fragmentView
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//
-//    }
 
     fun followerAlarm(destinationUid : String) {
         var alarmDTO = AlarmDTO()
@@ -139,27 +133,25 @@ class UserFragment : Fragment(){
             if(followDTO?.followingCount != null){
                 fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
             }
-
             if(followDTO?.followerCount != null){
                 fragmentView?.account_tv_follow_count?.text = followDTO?.followerCount?.toString()
                 if(followDTO?.followers?.containsKey(currentUserUid)!!){
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
-                    fragmentView?.account_btn_follow_signout
-                            ?.background
-                            ?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
+                    fragmentView?.account_btn_follow_signout?.background?.setColorFilter(ContextCompat.getColor(activity!!, R.color.colorLightGray), PorterDuff.Mode.MULTIPLY)
                 }else{
-
                     fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
                     if(uid != currentUserUid){
                         fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
-                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.following)
+                        fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_click)
 
                     }
                 }
             }
         }
     }
-    
+
+
+
     fun requestFollw(){
         //save data to my account
         var tsDocFollowing = firestore?.collection("users")?.document(uid!!)
@@ -167,8 +159,8 @@ class UserFragment : Fragment(){
             var followDTO = transacion.get(tsDocFollowing!!).toObject(FollowDTO::class.java)
             if(followDTO == null){
                 followDTO = FollowDTO()
-                followDTO!!.followerCount = 1
-                followDTO!!.followers[uid!!] = true
+                followDTO!!.followingCount = 1
+                followDTO!!.followings[uid!!] = true
                 followerAlarm(uid!!)
 
                 transacion.set(tsDocFollowing, followDTO)
@@ -182,8 +174,8 @@ class UserFragment : Fragment(){
             }else {
                 //It add following thired person when a third person do not follow me
                     //내가 팔로우 안 한 상태라면
-                followDTO?.followingCount = followDTO?.followingCount + 1
-                followDTO?.followings[uid!!] = true
+                followDTO?.followerCount = followDTO?.followingCount + 1
+                followDTO?.followers[uid!!] = true
                 followerAlarm(uid!!)
             }
             transacion.set(tsDocFollowing, followDTO)
@@ -195,7 +187,7 @@ class UserFragment : Fragment(){
             var followDTO = transacion.get(tsDocFollower!!).toObject(FollowDTO::class.java)
             if(followDTO == null){
                 followDTO = FollowDTO()
-                followDTO!!.followingCount = 1
+                followDTO!!.followerCount = 1
                 followDTO!!.followers[currentUserUid!!] = true
 
                 transacion.set(tsDocFollower, followDTO!!)
