@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.nellstargram">
         <activity android:name=".navigation.CommentActivity"></activity>
-        <activity android:name=".navigation.AddPhotoActivity" />
+        <activity android:name=".navigation.AddPhotoActivity" ></activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity" ></activity>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/push_icon"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/colorAccent"/>
     </application>
-
 </manifest>
