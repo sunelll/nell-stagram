@@ -63,10 +63,18 @@ class AlramFragment : Fragment(){
                     }
             }
 
+            if(alarmDTOList[p1].userId!!.length >= 6){
+                val str_0 = alarmDTOList[p1].userId!!.split('@')
+                val str_1 = alarmDTOList[p1].userId!!.trim('@')
+                val str_2 = alarmDTOList[p1].userId!!.trimStart()
+
+            }
+
             when(alarmDTOList[p1].kind){
                 0->{
-                    val str_0 = alarmDTOList[p1].userId + getString(R.string.alarm_favorite)
-                    view.commentview_textview_profile.text = str_0
+
+                    val str_0 = alarmDTOList[p1].userId!! + "..." + getString(R.string.alarm_favorite)
+                    view.commentview_textview_profile.text = str_0.toString()
                 }
                 1->{
                     val str_0 = alarmDTOList[p1].userId + " " + getString(R.string.alarm_comment) + "test" + alarmDTOList[p1].message
@@ -80,6 +88,8 @@ class AlramFragment : Fragment(){
             view.commentview_imageview_profile.visibility = view.visibility
             view.commentview_textview_comment.visibility = View.INVISIBLE
         }
+
+        
 
         override fun getItemCount(): Int {
             return alarmDTOList.size
