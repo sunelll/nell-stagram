@@ -19,7 +19,6 @@ import com.google.firebase.iid.InstanceIdResult
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.nell.nellstargram.navigation.*
-import com.nell.nellstargram.navigation.utill.FcmPush
 import kotlinx.android.synthetic.main.activity_main.*
 
 @Suppress("DEPRECATION")
@@ -87,12 +86,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         }
     }
 
-    override fun onStop() {
-        super.onStop()
-        FcmPush.instance.sendMessage("6vw8UBSWnAa7VT45GfS1Mkm0uct1", "hi", "bye")
-    }
-
-
+//    override fun onStop() {
+//        super.onStop()
+//        FcmPush.instance.sendMessage("6vw8UBSWnAa7VT45GfS1Mkm0uct1", "hi", "bye")
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
