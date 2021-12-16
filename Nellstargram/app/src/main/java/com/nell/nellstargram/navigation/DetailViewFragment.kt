@@ -37,7 +37,7 @@ class DetailViewFragment : Fragment() {
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
 
-        view.detailviewfragment_recyclerview.adapter = DetailVewReecyclerViewAdater()
+        view.detailviewfragment_recyclerview.adapter = DetailVewRecyclerViewAdater()
         view.detailviewfragment_recyclerview.layoutManager =  LinearLayoutManager(activity)
         //역순으로 출력
         (view.detailviewfragment_recyclerview.layoutManager as LinearLayoutManager).reverseLayout = true
@@ -46,7 +46,7 @@ class DetailViewFragment : Fragment() {
         view.detailviewfragment_recyclerview?.smoothScrollToPosition(0)
         return view
     }
-    inner class DetailVewReecyclerViewAdater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    inner class DetailVewRecyclerViewAdater : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
         var contentUidList : ArrayList<String> = arrayListOf()
 

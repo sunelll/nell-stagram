@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
         when(item.itemId){
             R.id.action_home ->{
                 var detailViewFragment = DetailViewFragment()
+                var bundle = Bundle()
+                var uid = FirebaseAuth.getInstance().currentUser?.uid
+                bundle.putString("destinationUid", uid)
+                detailViewFragment.arguments = bundle
                 supportFragmentManager.beginTransaction().replace(R.id.main_content, detailViewFragment).commit()
                 return true
             }
