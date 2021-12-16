@@ -14,6 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.nell.nellstargram.R
 import com.nell.nellstargram.navigation.model.AlarmDTO
 import com.nell.nellstargram.navigation.model.ContentDTO
+import com.nell.nellstargram.navigation.utill.FcmPush
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
@@ -50,10 +51,10 @@ class CommentActivity : AppCompatActivity() {
 
     }
 
-    fun commentDelete(destinationUid : String) {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        FirebaseFirestore.getInstance().collection("alarms").document().set(ContentDTO::class.java)
-    }
+//    fun commentDelete(destinationUid : String) {
+//        val uid = FirebaseAuth.getInstance().currentUser?.uid
+//        FirebaseFirestore.getInstance().collection("alarms").document().set(ContentDTO::class.java)
+//    }
 
 
     fun commentAlram(destinationUid : String, message: String){
@@ -65,6 +66,10 @@ class CommentActivity : AppCompatActivity() {
         alarmDTO.timestamp = System.currentTimeMillis()
         alarmDTO.message = message
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var msg = FirebaseAuth.getInstance()?.currentUser?.email + getString(R.string.alarm_comment) + "리플: " + message
+        FcmPush.instance.sendMessage(destinationUid, "넬스타그램에서 알람이 도착했어요", msg)
+
     }
 
     inner class CommentRecyclerviewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){

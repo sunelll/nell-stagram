@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.nell.nellstargram.R
 import com.nell.nellstargram.navigation.model.AlarmDTO
 import com.nell.nellstargram.navigation.model.ContentDTO
+import com.nell.nellstargram.navigation.utill.FcmPush
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.frgment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.*
@@ -191,6 +192,8 @@ class DetailViewFragment : Fragment() {
             alarmDTO.timestamp = System.currentTimeMillis()
             FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
+            var message = FirebaseAuth.getInstance()?.currentUser?.email + getString(R.string.alarm_favorite)
+            FcmPush.instance.sendMessage(destinationUid, "넬스타그램에서 알람이 도착했어요", message)
         }
 
 

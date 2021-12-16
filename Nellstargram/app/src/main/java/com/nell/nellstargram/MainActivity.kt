@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemS
 
         //Set default screen
         bottom_navigation.selectedItemId = R.id.action_home
-        registerPushToken()
+        //registerPushToken()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

@@ -24,6 +24,7 @@ import com.nell.nellstargram.R
 import com.nell.nellstargram.navigation.model.AlarmDTO
 import com.nell.nellstargram.navigation.model.ContentDTO
 import com.nell.nellstargram.navigation.model.FollowDTO
+import com.nell.nellstargram.navigation.utill.FcmPush
 import com.twitter.sdk.android.core.TwitterCore
 import kotlinx.android.synthetic.main.activity_add_photo.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -105,6 +106,9 @@ class UserFragment : Fragment(){
         alarmDTO.kind = 2
         alarmDTO.timestamp = System.currentTimeMillis()
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = auth?.currentUser?.email + getString(R.string.alarm_follow)
+        FcmPush.instance.sendMessage(destinationUid, "넬스타그램에서 알람이 도착했어요", message)
     }
 
     @SuppressLint("UseRequireInsteadOfGet")
